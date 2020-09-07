@@ -5,6 +5,7 @@ import random
 from time import time ,ctime
 import itertools as it
 from termcolor import colored as c
+import cv2 as cv
 ####################################################################################################################
 robot = Robot()
 name= robot.getName()
@@ -66,6 +67,7 @@ L0,L1,L7,L8=robot.getCompass("led0"),robot.getCompass("led1"),robot.getCompass("
 grandList=list(it.product([0,1,2,3,4,5,6,7,8,9],repeat=6)) ######### 6 #########
 fileRep=open('test.npy', 'wb')
 logname=ctime(time()).replace(':','_')+'.npy'
+ph=cv.imread('ph.png')
 ####################################################################################################################
 def delay(x):
     L8.set(0)
@@ -83,21 +85,6 @@ def stop():
     motors[1].setVelocity(0)
     motors[0].setVelocity(0)
 ####################################################################################################################
-def stnd_cue(binirize=False):
-    val=np.array([rr.getValue(),ll.getValue()])
-    for I in range(len(val)):
-        if val[I]>500: val[I]=500
-        if val[I]<100: val[I]=100
-    valstnd = 500 - val
-    valstnd=valstnd/(500-105)*255
-    for i in range(len(valstnd)):
-        valstnd[i]=round(min(valstnd[i],255))
-        valstnd[i]=round(max(valstnd[i],0))
-    if binirize: 
-        for i in range(len(valstnd)):
-            valstnd[i]= int(1) if valstnd[i]>0 else int(0)
-    return valstnd
-####################################################################################################################
 def make0_360(x):
     while x>360: x-=360
     while x<0: x+=360
@@ -111,6 +98,16 @@ def cord():
     rot+=180
     if rot>180: rot=-1*(360-rot)
     return [pos[0],pos[2],rot]
+####################################################################################################################
+def stnd_cue(binirize=False):
+    pos=cord()
+    senDist=0.03
+    rightSen=[pos[0]+senDist/2*sin(pos[2]*np.pi/180-np.pi/2),pos[1]+senDist/2*cos(pos[2]*np.pi/180-np.pi/2)]
+    leftSen=[pos[0]-senDist/2*sin(pos[2]*np.pi/180-np.pi/2),pos[1]-senDist/2*cos(pos[2]*np.pi/180-np.pi/2)]
+    rightSen=list(map(lambda x: int((x+1)*512/2),rightSen))
+    leftSen=list(map(lambda x: int((x+1)*512/2),leftSen))
+    sensorValue=[ph[rightSen[1],rightSen[0],0],ph[leftSen[1],leftSen[0],0]]
+    return sensorValue
 ####################################################################################################################
 def devideStates(inp):
     for i in range(len(inp)):

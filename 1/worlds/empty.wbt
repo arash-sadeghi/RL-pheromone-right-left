@@ -7,8 +7,10 @@ Robot {
   supervisor TRUE
 }
 DEF _1 E-puck {
-  translation 0.000698502 -6.56279e-05 -7.17665
-  rotation -2.761273296902494e-06 0.9999999999944806 -1.8476132080408115e-06 3.1400404471448273
+  hidden position_0_0 -3.6442191189871137e-14
+  hidden position_0_1 1.9810101796176584e-14
+  translation 0.000698501999937244 -6.396823255548981e-05 -2.2906820440144795e-13
+  rotation 2.9767383747980472e-06 0.9999999999955695 9.830612043693461e-10 3.1400404471827885
   name "robot(1)"
   controller "epuck"
   customData "reset done"
@@ -20,14 +22,15 @@ DEF _1 E-puck {
       rotation 0 0 1 1.5708
     }
     GPS {
+      translation 0 0 0.03
     }
     DEF rr DistanceSensor {
-      translation -0.02 -0.015 0.015
+      translation -0.02 -0.025 0.03
       name "rr"
       type "infra-red"
     }
     DEF ll DistanceSensor {
-      translation -0.02 0.015 0.015
+      translation -0.02 0.025 0.025
       rotation 0 0 1 0
       name "ll"
       type "infra-red"
@@ -35,15 +38,15 @@ DEF _1 E-puck {
   ]
 }
 Viewpoint {
-  orientation 0.0014336031329053437 0.9695269068186734 0.24498065584178774 3.1529396874443165
-  position -0.03497827877458076 1.0572827204738158 -8.710342373298916
+  orientation 1 0 0 4.71238898038469
+  position -0.0004943101654421814 1.4156224220136175 -0.0003177225330807191
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 RectangleArena {
-  floorSize 1.5 15
+  floorSize 2 2
 }
 Solid {
   translation 0 0.01 0
@@ -57,7 +60,7 @@ Solid {
         }
       }
       geometry Plane {
-        size 1.5 15
+        size 2 2
       }
     }
   ]
